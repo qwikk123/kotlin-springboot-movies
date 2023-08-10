@@ -5,4 +5,4 @@ pluginManagement {
 		gradlePluginPortal()
 	}
 }
-rootProject.name = "helloworld"
+rootProject.name = "kotlin_springboot_movies"
