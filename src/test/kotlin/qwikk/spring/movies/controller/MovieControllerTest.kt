@@ -55,7 +55,7 @@ class MovieControllerTest {
         }
 
         @Test
-        fun `Should return Not Found if the account a number does not exist`() {
+        fun `Should return Not Found if the movieId does not exist`() {
             val movieId = -1
 
             mockMvc.get("$url/$movieId")
