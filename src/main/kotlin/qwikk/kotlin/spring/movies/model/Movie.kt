@@ -1,4 +1,4 @@
-package qwikk.kotlin.spring.helloworld.model
+package qwikk.kotlin.spring.movies.model
 
 data class Movie(
     val id:Int,

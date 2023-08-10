@@ -1,4 +1,4 @@
-package qwikk.kotlin.spring.helloworld.controller
+package qwikk.kotlin.spring.movies.controller
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName

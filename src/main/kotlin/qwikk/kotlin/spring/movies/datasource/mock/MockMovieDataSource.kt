@@ -1,8 +1,8 @@
-package qwikk.kotlin.spring.helloworld.datasource.mock
+package qwikk.kotlin.spring.movies.datasource.mock
 
 import org.springframework.stereotype.Repository
-import qwikk.kotlin.spring.helloworld.datasource.MovieDataSource
-import qwikk.kotlin.spring.helloworld.model.Movie
+import qwikk.kotlin.spring.movies.datasource.MovieDataSource
+import qwikk.kotlin.spring.movies.model.Movie
 
 @Repository
 class MockMovieDataSource : MovieDataSource {

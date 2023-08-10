@@ -1,4 +1,4 @@
-package qwikk.kotlin.spring.helloworld
+package qwikk.kotlin.spring.movies
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
