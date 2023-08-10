@@ -1,4 +1,4 @@
-package qwikk.kotlin.spring.movies
+package qwikk.spring.movies
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

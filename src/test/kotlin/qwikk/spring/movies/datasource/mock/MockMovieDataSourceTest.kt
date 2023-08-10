@@ -1,4 +1,4 @@
-package qwikk.kotlin.spring.movies.datasource.mock
+package qwikk.spring.movies.datasource.mock
 
 import org.assertj.core.api.Assertions.*
 import org.junit.jupiter.api.DisplayName

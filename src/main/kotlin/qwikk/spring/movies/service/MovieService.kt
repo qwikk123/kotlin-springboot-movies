@@ -1,7 +1,7 @@
-package qwikk.kotlin.spring.movies.service
+package qwikk.spring.movies.service
 
 import org.springframework.stereotype.Service
-import qwikk.kotlin.spring.movies.datasource.MovieDataSource
+import qwikk.spring.movies.datasource.MovieDataSource
 
 @Service
 class MovieService(private val dataSource: MovieDataSource) {

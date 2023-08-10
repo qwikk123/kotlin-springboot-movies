@@ -1,6 +1,6 @@
-package qwikk.kotlin.spring.movies.datasource
+package qwikk.spring.movies.datasource
 
-import qwikk.kotlin.spring.movies.model.Movie
+import qwikk.spring.movies.model.Movie
 
 interface MovieDataSource {
     fun retrieveMovies(): Collection<Movie>
