@@ -1,6 +1,6 @@
 package qwikk.spring.movies.controller
 
-import org.junit.jupiter.api.Assertions.*
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
@@ -11,18 +11,20 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.post
+import qwikk.spring.movies.model.Movie
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class MovieControllerTest {
-
-    @Autowired
-    lateinit var mockMvc: MockMvc
+class MovieControllerTest @Autowired constructor(
+    val mockMvc: MockMvc,
+    val objectMapper: ObjectMapper
+) {
 
     val url = "/api/movies"
 
     @Nested
-    @DisplayName("getMovies()")
+    @DisplayName("GET /api/movies/all")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GetMovies {
         @Test
@@ -38,7 +40,7 @@ class MovieControllerTest {
     }
 
     @Nested
-    @DisplayName("getMovie()")
+    @DisplayName("GET /api/movies/{movieId}")
     @TestInstance(TestInstance.Lifecycle.PER_CLASS)
     inner class GetMovie {
         @Test
@@ -62,6 +64,42 @@ class MovieControllerTest {
                 .andDo { print() }
                 .andExpect {
                     status { isNotFound() }
+                }
+        }
+    }
+
+    @Nested
+    @DisplayName("POST /api/movies/add")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class AddMovie {
+
+        @Test
+        fun `Should add a new movie`() {
+            val movie = Movie(1234,"AddedMovie",2023,120)
+
+            mockMvc.post("$url/add") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(movie)
+            }
+                .andDo { print() }
+                .andExpect {
+                    status { isCreated() }
+                    content { contentType(MediaType.APPLICATION_JSON) }
+                    jsonPath("$.id") { value(1234) }
+                }
+        }
+
+        @Test
+        fun `Should return BAD REQUEST if movie id already exists`() {
+            val movie = Movie(1234,"AddedMovie",2023,120)
+
+            mockMvc.post("$url/add") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(movie)
+            }
+                .andDo { print() }
+                .andExpect {
+                    status { isBadRequest() }
                 }
         }
     }
