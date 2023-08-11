@@ -28,10 +28,10 @@ class MovieController(private val service: MovieService) {
     @GetMapping("/all")
     fun getMovies(): Collection<Movie> = service.getMovies()
 
-    @GetMapping("{movieId}")
+    @GetMapping("/{movieId}")
     fun getMovie(@PathVariable movieId :Int) = service.getMovie(movieId)
 
     @PostMapping("/add")
     @ResponseStatus(HttpStatus.CREATED)
-    fun addMovie(@RequestBody movie: Movie) : Movie = service.addMovie(movie)
+    fun addMovie(@RequestBody movie: Movie) = service.addMovie(movie)
 }
