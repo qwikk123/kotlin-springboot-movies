@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.get
+import org.springframework.test.web.servlet.patch
 import org.springframework.test.web.servlet.post
 import qwikk.spring.movies.model.Movie
 
@@ -87,6 +88,11 @@ class MovieControllerTest @Autowired constructor(
                     content { contentType(MediaType.APPLICATION_JSON) }
                     jsonPath("$.id") { value(1234) }
                 }
+
+            mockMvc.get("$url/${movie.id}")
+                .andExpect { content {
+                    json(objectMapper.writeValueAsString(movie))
+                } }
         }
 
         @Test
@@ -101,6 +107,46 @@ class MovieControllerTest @Autowired constructor(
                 .andExpect {
                     status { isBadRequest() }
                 }
+        }
+    }
+
+    @Nested
+    @DisplayName("PATCH /api/movies/patch")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class PatchMovie {
+        @Test
+        fun `Should update movie`() {
+            val updatedMovie = Movie(1234,"UpdatedMovie",2023,120)
+
+            mockMvc.patch("$url/patch") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(updatedMovie)
+            }
+                .andDo { print() }
+                .andExpect {
+                    status { isOk() }
+                }
+
+            mockMvc.get("$url/${updatedMovie.id}")
+                .andExpect { content {
+                    json(objectMapper.writeValueAsString(updatedMovie))
+                } }
+        }
+
+        @Test
+        fun `patch should return NOT FOUND if no movie with id exists`() {
+            val badMovie = Movie(-50,"UpdatedMovie",2023,120)
+
+            mockMvc.patch("$url/patch") {
+                contentType = MediaType.APPLICATION_JSON
+                content = objectMapper.writeValueAsString(badMovie)
+            }
+                .andDo { print() }
+                .andExpect {
+                    status { isNotFound() }
+                }
+
+
         }
     }
 }

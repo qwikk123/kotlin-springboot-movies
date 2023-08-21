@@ -13,5 +13,8 @@ class MovieService(private val dataSource: MovieDataSource) {
         dataSource.createMovie(movie)
         return movie
     }
+    fun updateMovie(movie: Movie) {
+        dataSource.updateMovie(movie)
+    }
 
 }

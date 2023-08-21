@@ -25,4 +25,11 @@ class MockMovieDataSource : MovieDataSource {
         movies.add(movie)
         return movie
     }
+
+    override fun updateMovie(movie: Movie) {
+        val movieToReplace = movies.firstOrNull { it.id == movie.id }
+            ?: throw NoSuchElementException("Could not find movie with id: ${movie.id}")
+        movies.remove(movieToReplace)
+        movies.add(movie)
+    }
 }
