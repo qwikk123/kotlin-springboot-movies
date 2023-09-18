@@ -7,4 +7,5 @@ interface MovieDataSource {
     fun retrieveMovie(movieId: Int): Movie
     fun createMovie(movie: Movie): Movie
     fun updateMovie(movie: Movie)
+    fun delete(movieId: Int)
 }

@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.get
-import org.springframework.test.web.servlet.patch
-import org.springframework.test.web.servlet.post
+import org.springframework.test.web.servlet.*
 import qwikk.spring.movies.model.Movie
 
 @SpringBootTest
@@ -147,6 +144,36 @@ class MovieControllerTest @Autowired constructor(
                 }
 
 
+        }
+    }
+
+    @Nested
+    @DisplayName("DELETE /api/movies/delete/{movieId}")
+    @TestInstance(TestInstance.Lifecycle.PER_CLASS)
+    inner class DeleteMovie {
+        @Test
+        fun `Should delete movie with movieId`() {
+            val movieId = 3
+
+            mockMvc.delete("$url/delete/$movieId")
+                .andDo { print() }
+                .andExpect {
+                    status { isNoContent() }
+                }
+
+            mockMvc.get("$url/$movieId")
+                .andExpect { status { isNotFound() } }
+        }
+
+        @Test
+        fun `Should return NOT FOUND if movie does not exist`() {
+            val movieId = -123
+
+            mockMvc.delete("$url/delete/$movieId")
+                .andDo { print() }
+                .andExpect {
+                    status { isNotFound() }
+                }
         }
     }
 }

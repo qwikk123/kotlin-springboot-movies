@@ -17,4 +17,8 @@ class MovieService(private val dataSource: MovieDataSource) {
         dataSource.updateMovie(movie)
     }
 
+    fun delete(movieId: Int) {
+        dataSource.delete(movieId)
+    }
+
 }

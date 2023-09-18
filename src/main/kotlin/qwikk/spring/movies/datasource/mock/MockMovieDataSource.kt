@@ -32,4 +32,10 @@ class MockMovieDataSource : MovieDataSource {
         movies.remove(movieToReplace)
         movies.add(movie)
     }
+
+    override fun delete(movieId: Int) {
+        if (!movies.removeIf { it.id == movieId }) {
+            throw NoSuchElementException("Could not find movie with id: $movieId")
+        }
+    }
 }

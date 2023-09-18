@@ -2,6 +2,7 @@ package qwikk.spring.movies.controller
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PatchMapping
@@ -38,4 +39,10 @@ class MovieController(private val service: MovieService) {
 
     @PatchMapping("/patch")
     fun updateMovie(@RequestBody movie: Movie) = service.updateMovie(movie)
+
+    @DeleteMapping("/delete/{movieId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deleteMovie(@PathVariable movieId: Int) {
+        service.delete(movieId)
+    }
 }
