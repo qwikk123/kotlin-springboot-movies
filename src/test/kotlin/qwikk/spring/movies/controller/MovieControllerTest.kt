@@ -32,7 +32,7 @@ class MovieControllerTest @Autowired constructor(
                 .andExpect {
                     status { isOk()}
                     content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$[0].name") { value("TestName1")}
+                    jsonPath("$[0].seriesTitle") { value("Title")}
                 }
         }
     }
@@ -43,14 +43,14 @@ class MovieControllerTest @Autowired constructor(
     inner class GetMovie {
         @Test
         fun `Should return movie with the given id`() {
-            val id = 1
+            val id = 1001
 
             mockMvc.get("$url/$id")
                 .andDo { print() }
                 .andExpect {
                     status { isOk()}
                     content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$.id") { value(1)}
+                    jsonPath("$.movieID") { value(1001)}
                 }
         }
 
@@ -73,7 +73,7 @@ class MovieControllerTest @Autowired constructor(
 
         @Test
         fun `Should add a new movie`() {
-            val movie = Movie(1234,"AddedMovie",2023,120)
+            val movie = Movie(1234,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
 
             mockMvc.post("$url/add") {
                 contentType = MediaType.APPLICATION_JSON
@@ -86,7 +86,7 @@ class MovieControllerTest @Autowired constructor(
                     jsonPath("$.id") { value(1234) }
                 }
 
-            mockMvc.get("$url/${movie.id}")
+            mockMvc.get("$url/${movie.movieID}")
                 .andExpect { content {
                     json(objectMapper.writeValueAsString(movie))
                 } }
@@ -94,7 +94,7 @@ class MovieControllerTest @Autowired constructor(
 
         @Test
         fun `Should return BAD REQUEST if movie id already exists`() {
-            val movie = Movie(1234,"AddedMovie",2023,120)
+            val movie = Movie(1234,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
 
             mockMvc.post("$url/add") {
                 contentType = MediaType.APPLICATION_JSON
@@ -113,7 +113,7 @@ class MovieControllerTest @Autowired constructor(
     inner class PatchMovie {
         @Test
         fun `Should update movie`() {
-            val updatedMovie = Movie(1234,"UpdatedMovie",2023,120)
+            val updatedMovie = Movie(1234,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
 
             mockMvc.patch("$url/patch") {
                 contentType = MediaType.APPLICATION_JSON
@@ -124,7 +124,7 @@ class MovieControllerTest @Autowired constructor(
                     status { isOk() }
                 }
 
-            mockMvc.get("$url/${updatedMovie.id}")
+            mockMvc.get("$url/${updatedMovie.movieID}")
                 .andExpect { content {
                     json(objectMapper.writeValueAsString(updatedMovie))
                 } }
@@ -132,7 +132,7 @@ class MovieControllerTest @Autowired constructor(
 
         @Test
         fun `patch should return NOT FOUND if no movie with id exists`() {
-            val badMovie = Movie(-50,"UpdatedMovie",2023,120)
+            val badMovie = Movie(-50,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
 
             mockMvc.patch("$url/patch") {
                 contentType = MediaType.APPLICATION_JSON
@@ -153,7 +153,7 @@ class MovieControllerTest @Autowired constructor(
     inner class DeleteMovie {
         @Test
         fun `Should delete movie with movieId`() {
-            val movieId = 3
+            val movieId = 1003
 
             mockMvc.delete("$url/delete/$movieId")
                 .andDo { print() }

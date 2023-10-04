@@ -25,9 +25,9 @@ class MockMovieDataSourceTest {
         fun `Should provide some mock data`() {
             val movies = mockDataSource.retrieveMovies()
 
-            assertThat(movies).allMatch { it.name.isNotBlank() }
-            assertThat(movies).allMatch { it.duration > 0 }
-            assertThat(movies).allMatch { it.releaseYear > 0 }
+            assertThat(movies).allMatch { it.seriesTitle.isNotBlank() }
+            assertThat(movies).allMatch { it.runtime.isNotBlank() }
+            assertThat(movies).allMatch { it.releasedYear > 0 }
         }
     }
 }
