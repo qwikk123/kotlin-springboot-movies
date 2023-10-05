@@ -5,4 +5,5 @@ import qwikk.spring.movies.model.Movie
 
 interface MovieRepository : CrudRepository<Movie, Long> {
     fun findBySeriesTitle(seriesTitle:String) : Iterable<Movie>
+    fun findByGenre(genre:String) : Iterable<Movie>
 }

@@ -64,4 +64,7 @@ class MovieController(private val service: MovieService) {
 
     @GetMapping("/dbmovies/title/{seriesTitle}")
     fun findByTitle(@PathVariable seriesTitle:String) = repository.findBySeriesTitle(seriesTitle)
+
+    @GetMapping("dbmovies/genre/{genre}")
+    fun findByGenre(@PathVariable genre: String) = repository.findByGenre(genre)
 }
