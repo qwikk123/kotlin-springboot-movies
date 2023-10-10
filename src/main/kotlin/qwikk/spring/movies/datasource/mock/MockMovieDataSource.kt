@@ -8,9 +8,9 @@ import java.lang.IllegalArgumentException
 @Repository
 class MockMovieDataSource : MovieDataSource {
     val movies = mutableListOf(
-        Movie(1003,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross"),
-        Movie(1004,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross"),
-        Movie(1005,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
+        Movie(1003,"link","Title",1000,"cert","runtime","genre",1.0,"overview",90,"director","star1","star2","star3","star4",1,"gross"),
+        Movie(1004,"link","Title",1000,"cert","runtime","genre",2.0,"overview",90,"director","star1","star2","star3","star4",2,"gross"),
+        Movie(1005,"link","Title",1000,"cert","runtime","genre",3.0,"overview",90,"director","star1","star2","star3","star4",3,"gross")
         )
 
     override fun retrieveMovies() = movies

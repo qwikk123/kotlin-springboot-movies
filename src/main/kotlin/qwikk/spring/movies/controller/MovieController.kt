@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.Mapping
 import org.springframework.web.bind.annotation.PatchMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -54,10 +55,7 @@ class MovieController(private val service: MovieService) {
     }
 
     @GetMapping("/dbmovies/all")
-    fun findAll(): MutableIterable<Movie> {
-        val list = repository.findAll()
-        return list
-    }
+    fun findAll() = repository.findAllByOrderByImdbRatingDesc()
 
     @GetMapping("/dbmovies/id/{movieID}")
     fun findAllById(@PathVariable movieID: Long): Optional<Movie> = repository.findById(movieID)
@@ -66,5 +64,14 @@ class MovieController(private val service: MovieService) {
     fun findByTitle(@PathVariable seriesTitle:String) = repository.findBySeriesTitle(seriesTitle)
 
     @GetMapping("dbmovies/genre/{genre}")
-    fun findByGenre(@PathVariable genre: String) = repository.findByGenre(genre)
+    fun findByGenre(@PathVariable genre: String) = repository.findByGenreContains(genre)
+
+    @RequestMapping("/dbmovies/fix")
+    fun fixMovies() {
+        val movies = repository.findAll()
+        movies.forEach {
+            it.posterLink = it.posterLink.split("_V1_")[0] + "_V1_.jpg"
+            repository.save(it)
+        }
+    }
 }
