@@ -12,4 +12,7 @@ interface MovieRepository : JpaRepository<Movie, Long> {
 
     @Query("FROM Movie WHERE genre LIKE '%' || :genre || '%'")
     fun findByGenreContains(@Param("genre") genre:String) : List<Movie>
+
+    @Query("FROM Movie ORDER BY imdbRating DESC LIMIT 10")
+    fun findTop10Rated() : List<Movie>
 }
