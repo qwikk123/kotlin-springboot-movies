@@ -2,15 +2,16 @@ package qwikk.spring.movies.datasource.mock
 
 import org.springframework.stereotype.Repository
 import qwikk.spring.movies.datasource.MovieDataSource
+import qwikk.spring.movies.model.Genre
 import qwikk.spring.movies.model.Movie
 import java.lang.IllegalArgumentException
 
 @Repository
 class MockMovieDataSource : MovieDataSource {
     val movies = mutableListOf(
-        Movie(1003,"link","Title",1000,"cert","runtime","genre",1.0,"overview",90,"director","star1","star2","star3","star4",1,"gross"),
-        Movie(1004,"link","Title",1000,"cert","runtime","genre",2.0,"overview",90,"director","star1","star2","star3","star4",2,"gross"),
-        Movie(1005,"link","Title",1000,"cert","runtime","genre",3.0,"overview",90,"director","star1","star2","star3","star4",3,"gross")
+        Movie(1003,"link","Title",1000,"cert","runtime",setOf(Genre()),1.0,"overview",90,"director","star1","star2","star3","star4",1,"gross"),
+        Movie(1004,"link","Title",1000,"cert","runtime",setOf(Genre()),2.0,"overview",90,"director","star1","star2","star3","star4",2,"gross"),
+        Movie(1005,"link","Title",1000,"cert","runtime",setOf(Genre()),3.0,"overview",90,"director","star1","star2","star3","star4",3,"gross")
         )
 
     override fun retrieveMovies() = movies

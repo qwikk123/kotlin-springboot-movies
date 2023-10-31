@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import qwikk.spring.movies.model.Movie
+import qwikk.spring.movies.repo.GenreRepository
+import qwikk.spring.movies.repo.MovieGenreRepository
 import qwikk.spring.movies.repo.MovieRepository
 import qwikk.spring.movies.service.MovieService
 import java.util.*
@@ -22,11 +24,15 @@ import kotlin.NoSuchElementException
 
 @RestController
 @RequestMapping("api/movies")
-@CrossOrigin(origins = ["http://localhost:3000"])
+@CrossOrigin
 class MovieController(private val service: MovieService) {
 
     @Autowired
     lateinit var repository: MovieRepository
+    @Autowired
+    lateinit var genreRepository : GenreRepository
+    @Autowired
+    lateinit var movieGenreRepository: MovieGenreRepository
 
     @ExceptionHandler(NoSuchElementException::class)
     fun handleNotFound(e: NoSuchElementException): ResponseEntity<String> =
@@ -36,6 +42,8 @@ class MovieController(private val service: MovieService) {
     fun handleBadRequest(e: IllegalArgumentException): ResponseEntity<String> =
         ResponseEntity(e.message, HttpStatus.BAD_REQUEST)
 
+
+    //MOCK DATA
     @GetMapping("/all")
     fun getMovies(): Collection<Movie> = service.getMovies()
 
@@ -55,6 +63,8 @@ class MovieController(private val service: MovieService) {
         service.delete(movieID)
     }
 
+
+    //DATABASE
     @GetMapping("/dbmovies/all")
     fun findAll() = repository.findAllByOrderByImdbRatingDesc()
 
@@ -67,8 +77,24 @@ class MovieController(private val service: MovieService) {
     @GetMapping("/dbmovies/title/{seriesTitle}")
     fun findByTitle(@PathVariable seriesTitle:String) = repository.findBySeriesTitle(seriesTitle)
 
-    @GetMapping("dbmovies/genre/{genre}")
-    fun findByGenre(@PathVariable genre: String) = repository.findByGenreContains(genre)
+//    @GetMapping("dbmovies/genre/{genre}")
+//    fun findByGenre(@PathVariable genre: String) = repository.findByGenreContains(genre)
+
+    @GetMapping("dbmovies/genre/all")
+    fun findAllGenre() = genreRepository.findAllGenres()
+
+//    @GetMapping("dbmovies/createmoviegenre")
+//    fun createMovieGenre() {
+//        val movies= repository.findAll()
+//        val genres = genreRepository.findAll()
+//
+//        movies.forEach {movie ->
+//            movie.genre.split(",").map { s -> s.trim() }.forEach {movieGenre ->
+//                val genre = genres.find { g -> g.name == movieGenre }
+//                movieGenreRepository.save(MovieGenre(movie.movieID, genre!!.genreID))
+//            }
+//        }
+//    }
 
     @RequestMapping("/dbmovies/fix")
     fun fixMovies() {

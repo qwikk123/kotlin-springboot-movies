@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.*
+import qwikk.spring.movies.model.Genre
 import qwikk.spring.movies.model.Movie
 
 @SpringBootTest
@@ -43,14 +44,14 @@ class MovieControllerTest @Autowired constructor(
     inner class GetMovie {
         @Test
         fun `Should return movie with the given id`() {
-            val id = 1001
+            val id = 1004
 
             mockMvc.get("$url/$id")
                 .andDo { print() }
                 .andExpect {
                     status { isOk()}
                     content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$.movieID") { value(1001)}
+                    jsonPath("$.movieID") { value(1004)}
                 }
         }
 
@@ -73,7 +74,7 @@ class MovieControllerTest @Autowired constructor(
 
         @Test
         fun `Should add a new movie`() {
-            val movie = Movie(1234,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
+            val movie = Movie(1234,"link","Title",1000,"cert","runtime",setOf(Genre()),0.0,"overview",90,"director","star1","star2","star3","star4",0,"gross")
 
             mockMvc.post("$url/add") {
                 contentType = MediaType.APPLICATION_JSON
@@ -83,7 +84,7 @@ class MovieControllerTest @Autowired constructor(
                 .andExpect {
                     status { isCreated() }
                     content { contentType(MediaType.APPLICATION_JSON) }
-                    jsonPath("$.id") { value(1234) }
+                    jsonPath("$.movieID") { value(1234) }
                 }
 
             mockMvc.get("$url/${movie.movieID}")
@@ -94,7 +95,7 @@ class MovieControllerTest @Autowired constructor(
 
         @Test
         fun `Should return BAD REQUEST if movie id already exists`() {
-            val movie = Movie(1234,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
+            val movie = Movie(1234,"link","Title",1000,"cert","runtime",setOf(Genre()),0.0,"overview",90,"director","star1","star2","star3","star4",0,"gross")
 
             mockMvc.post("$url/add") {
                 contentType = MediaType.APPLICATION_JSON
@@ -113,7 +114,7 @@ class MovieControllerTest @Autowired constructor(
     inner class PatchMovie {
         @Test
         fun `Should update movie`() {
-            val updatedMovie = Movie(1234,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
+            val updatedMovie = Movie(1234,"link","Title",1000,"cert","runtime",setOf(Genre()),0.0,"overview",90,"director","star1","star2","star3","star4",0,"gross")
 
             mockMvc.patch("$url/patch") {
                 contentType = MediaType.APPLICATION_JSON
@@ -132,7 +133,7 @@ class MovieControllerTest @Autowired constructor(
 
         @Test
         fun `patch should return NOT FOUND if no movie with id exists`() {
-            val badMovie = Movie(-50,"link","Title",1000,"cert","runtime","genre","imdbrating","overview",90,"director","star1","star2","star3","star4","votes","gross")
+            val badMovie = Movie(-50,"link","Title",1000,"cert","runtime",setOf(Genre()),0.0,"overview",90,"director","star1","star2","star3","star4",0,"gross")
 
             mockMvc.patch("$url/patch") {
                 contentType = MediaType.APPLICATION_JSON
