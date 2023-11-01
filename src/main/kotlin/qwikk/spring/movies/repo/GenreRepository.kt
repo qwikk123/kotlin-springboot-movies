@@ -8,4 +8,6 @@ interface GenreRepository : JpaRepository<Genre, Long> {
 
     @Query("SELECT name FROM Genre")
     fun findAllGenres(): List<String>
+
+
 }

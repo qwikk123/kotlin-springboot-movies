@@ -8,6 +8,7 @@ import jakarta.persistence.*
 data class Genre(
     @Column(name = "genre_id") @Id var genreID: Int = -1,
     @Column(name = "genre_name") var name: String = "",
+
     @ManyToMany(mappedBy = "genre")
     @JsonIgnoreProperties("genre")
     val movies: Set<Movie> = emptySet()

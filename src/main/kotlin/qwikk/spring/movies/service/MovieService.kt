@@ -1,24 +1,22 @@
 package qwikk.spring.movies.service
 
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import qwikk.spring.movies.datasource.MovieDataSource
-import qwikk.spring.movies.model.Movie
+import qwikk.spring.movies.repo.GenreRepository
+import qwikk.spring.movies.repo.MovieRepository
 
 @Service
-class MovieService(private val dataSource: MovieDataSource) {
+class MovieService() {
 
-    fun getMovies() = dataSource.retrieveMovies()
-    fun getMovie(movieId: Int) = dataSource.retrieveMovie(movieId)
-    fun addMovie(movie: Movie): Movie {
-        dataSource.createMovie(movie)
-        return movie
-    }
-    fun updateMovie(movie: Movie) {
-        dataSource.updateMovie(movie)
-    }
+    @Autowired
+    lateinit var repository: MovieRepository
+    @Autowired
+    lateinit var genreRepository : GenreRepository
 
-    fun delete(movieId: Int) {
-        dataSource.delete(movieId)
-    }
-
+    fun findAll() = repository.findAllByOrderByImdbRatingDesc()
+    fun findTop10() = repository.findTop10Rated()
+    fun findMovieId(id: Long) = repository.findById(id)
+    fun findMovieTitle(title: String) = repository.findBySeriesTitle(title)
+    fun findAllGenres() = genreRepository.findAllGenres()
+    fun findByGenre(name: String) = repository.findByGenreName(name)
 }
